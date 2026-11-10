@@ -1,0 +1,54 @@
+@TaskTrackerAPI_HostAddress = http://localhost:5073
+
+### Get all tasks - may be empty when first run
+GET {{TaskTrackerAPI_HostAddress}}/api/tasks
+Accept: application/json
+###
+
+### Create a task (201 expected)
+# @name createTask
+POST {{TaskTrackerAPI_HostAddress}}/api/tasks
+Accept: application/json
+Content-Type: application/json
+
+{ 
+  "title": "Test", 
+  "description": "This is a test task", 
+  "isCompleted": false
+}
+
+###
+
+### Get task created above (200 expected)
+GET {{TaskTrackerAPI_HostAddress}}/api/tasks/{{createTask.response.body.$.id}}
+Accept: application/json
+###
+
+### Update the task (204 expected)
+PUT {{TaskTrackerAPI_HostAddress}}/api/tasks/{{createTask.response.body.$.id}}
+Accept: application/json
+Content-Type: application/json
+
+{ 
+  "title": "Amended", 
+  "description": "This is an amended test task", 
+  "isCompleted": true
+}
+
+###
+
+### check it's changed (200 expected)
+GET {{TaskTrackerAPI_HostAddress}}/api/tasks/{{createTask.response.body.$.id}}
+Accept: application/json
+###
+
+### Delete the task (204 expected)
+DELETE {{TaskTrackerAPI_HostAddress}}/api/tasks/{{createTask.response.body.$.id}}
+Accept: application/json
+###
+
+### Check it's now deleted (404 expected)
+GET {{TaskTrackerAPI_HostAddress}}/api/tasks/{{createTask.response.body.$.id}}
+Accept: application/json
+
+
