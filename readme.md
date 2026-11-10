@@ -45,7 +45,10 @@ dotnet ef database update
 dotnet run
 ```
 
-The Swagger UI is then available at `https://localhost:7237/swagger/index.html` for testing the API endpoints.
+The Swagger UI is then available on the url below. 
+```bash
+http://localhost:5073/swagger/index.html
+```
 
 ### Running tests
 
