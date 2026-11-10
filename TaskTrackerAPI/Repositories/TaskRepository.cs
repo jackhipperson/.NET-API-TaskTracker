@@ -18,7 +18,7 @@ namespace TaskTrackerAPI.Repositories
         {
             return _context.Tasks.Find(id);
         }
-        public int? AddTask(CreateTaskModel task)
+        public TaskItem AddTask(CreateTaskModel task)
         {
             var newTask = new TaskItem
             {
@@ -30,7 +30,7 @@ namespace TaskTrackerAPI.Repositories
 
             _context.Tasks.Add(newTask);
             _context.SaveChanges();
-            return newTask.Id;
+            return newTask;
 
         }
         public bool UpdateTask(int id, CreateTaskModel updatedTask)
@@ -38,17 +38,16 @@ namespace TaskTrackerAPI.Repositories
 
             var existingTask = GetTaskById(id);
 
-            if (existingTask == null)
+            if (existingTask is null)
             {
                 return false;
             }
             else
             {
-                existingTask!.Title = updatedTask.Title;
-                existingTask!.Description = updatedTask.Description;
-                existingTask!.IsCompleted = updatedTask.IsCompleted;
+                existingTask.Title = updatedTask.Title;
+                existingTask.Description = updatedTask.Description;
+                existingTask.IsCompleted = updatedTask.IsCompleted;
 
-                _context.Tasks.Update(existingTask!);
                 _context.SaveChanges();
                 return true;
             }
@@ -59,7 +58,7 @@ namespace TaskTrackerAPI.Repositories
         {
             var task = _context.Tasks.Find(id);
 
-            if (task == null)
+            if (task is null)
             {
                 return false;
             }

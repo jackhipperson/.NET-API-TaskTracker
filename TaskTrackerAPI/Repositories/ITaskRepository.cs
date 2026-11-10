@@ -8,7 +8,7 @@ namespace TaskTrackerAPI.Repositories
     {
         IEnumerable<TaskItem> GetAllTasks();
         TaskItem? GetTaskById(int id);
-        int? AddTask(CreateTaskModel task);
+        TaskItem AddTask(CreateTaskModel task);
         bool UpdateTask(int id, CreateTaskModel updatedTask);
         bool DeleteTask(int id);
     }

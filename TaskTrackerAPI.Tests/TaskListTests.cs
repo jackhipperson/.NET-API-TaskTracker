@@ -93,7 +93,7 @@ namespace TaskTrackerAPI.Tests
             {
                 Title = "Test Task 4",
                 Description = "This is a fourth test task.",
-                IsCompleted = false,
+                IsCompleted = true,
             };
 
             var result = await _client.PutAsJsonAsync("/api/tasks/1", amendedTask);

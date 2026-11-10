@@ -35,18 +35,14 @@ namespace TaskTrackerAPI.Controllers
         }
 
         [HttpPost("/api/tasks")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(TaskItem), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult CreateTask([FromBody] CreateTaskModel task)
         {
 
-            var id = _taskRepository.AddTask(task);
-            if (id == null)
-                return BadRequest();
+            var created = _taskRepository.AddTask(task);
 
-            var created = _taskRepository.GetTaskById(id.Value);
-
-            return CreatedAtAction(nameof(GetTask), new { id = id.Value }, created);
+            return CreatedAtAction(nameof(GetTask), new { id = created.Id }, created);
         }
 
         [HttpPut("/api/tasks/{id}")]
@@ -55,10 +51,7 @@ namespace TaskTrackerAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult UpdateTask(int id, [FromBody] CreateTaskModel task)
         {
-            if (_taskRepository.GetTaskById(id) == null)
-                return NotFound();
-
-            return _taskRepository.UpdateTask(id, task) ? new NoContentResult() : new BadRequestResult();
+            return _taskRepository.UpdateTask(id, task) ? new NoContentResult() : new NotFoundResult();
         }
 
         [HttpDelete("/api/tasks/{id}")]
@@ -67,10 +60,7 @@ namespace TaskTrackerAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult DeleteTask(int id)
         {
-            if (_taskRepository.GetTaskById(id) == null)
-                return NotFound();
-
-            return _taskRepository.DeleteTask(id) ? new NoContentResult() : new BadRequestResult();
+            return _taskRepository.DeleteTask(id) ? new NoContentResult() : new NotFoundResult();
         }
     }
 }
